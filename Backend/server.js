@@ -46,11 +46,8 @@ app.get('/', (req, res) => {
   res.send('CollabSphere API Server is running standard!');
 });
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://ai-project-collaboration.vercel.app'
-  ],
-  credentials: true,
+  origin: "https://ai-project-collaboration-five.vercel.app",
+  credentials: true
 }));
 // Custom Error Handling Middleware
 app.use(notFound);
