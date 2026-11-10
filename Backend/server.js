@@ -1,3 +1,4 @@
+
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -15,24 +16,32 @@ import publicRoutes from './routes/publicRoutes.js';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
-// Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
-connectDB();
-
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', credentials: true }));
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+
 app.use(express.json());
 
-// Setup uploads static directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes Registration
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'CollabSphere Backend Running'
+  });
+});
+
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/notes', noteRoutes);
@@ -41,20 +50,15 @@ app.use('/api/gemini', geminiRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/public', publicRoutes);
 
-// Base Route
 app.get('/', (req, res) => {
-  res.send('CollabSphere API Server is running standard!');
+  res.send('CollabSphere API Server is running!');
 });
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
 
-// Custom Error Handling Middleware
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+connectDB();
+
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  console.log(`Server running on port ${PORT}`);
+});
