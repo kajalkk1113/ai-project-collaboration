@@ -45,12 +45,13 @@ app.use('/api/public', publicRoutes);
 app.get('/', (req, res) => {
   res.send('CollabSphere API Server is running standard!');
 });
-app.use(
-  cors({
-    origin: "https://collab-sphere-ai-powered-project-bq.vercel.app",
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://ai-project-collaboration.vercel.app'
+  ],
+  credentials: true,
+}));
 // Custom Error Handling Middleware
 app.use(notFound);
 app.use(errorHandler);
