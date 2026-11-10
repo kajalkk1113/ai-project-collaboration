@@ -46,14 +46,15 @@ app.get('/', (req, res) => {
   res.send('CollabSphere API Server is running standard!');
 });
 app.use(cors({
-  origin: "https://ai-project-collaboration-five.vercel.app",
+  origin: true,
   credentials: true
 }));
+
 // Custom Error Handling Middleware
 app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-});
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${port}`);
+  });
